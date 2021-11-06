@@ -1,1 +1,1 @@
-# Churn_Prediction_Zindi_Challenge
+# Expresso Churn Prediction (Zindi Challenge)
