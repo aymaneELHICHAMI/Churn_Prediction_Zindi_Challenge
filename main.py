@@ -8,12 +8,18 @@ import argparse
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from sklearn.ensemble import RandomForestClassifier, HistGradientBoostingClassifier, VotingClassifier
 from sklearn.impute import KNNImputer
 from sklearn.model_selection import train_test_split
+from sklearn.neural_network import MLPClassifier
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
 from sklearn import metrics
+import time
 
+from sklearn.svm import SVC
+
+start_time = time.time()
 ########################
 ## Argparse Arguments ##
 ########################
@@ -123,6 +129,10 @@ X_test = scale.transform(X_test)
 #"""
 #Training
 clf = LogisticRegression(random_state=0)
+#clf = MLPClassifier(activation='relu', max_iter=1000)
+#clf = RandomForestClassifier()
+#clf = HistGradientBoostingClassifier(loss='binary_crossentropy', max_iter=1000)
+
 clf.fit(X_train, y_train)
 
 #Validation
@@ -137,16 +147,16 @@ auc_score_valid = metrics.auc(fpr, tpr)
 #print(y_pred_valid)
 #print(y_probas_valid)
 #print(y_proba_churn_valid)
-#print(score_valid)
-#print(auc_score_valid)
+print(score_valid)
+print(auc_score_valid)
 
 #Inference
 y_probas_test = clf.predict_proba(X_test)
 y_proba_churn_test = [y_probas_test[i][1] for i in range(len(y_probas_test))]
 submission_df['CHURN'] = y_proba_churn_test
-submission_df.to_csv('Submission_file_Basic_1.csv', index=None, sep=',')
-
+submission_df.to_csv('Submission_file_Basic_5.csv', index=None, sep=',')
 #"""
+
 ###################
 ## Main Function ##
 ###################
@@ -157,6 +167,7 @@ def main():
     #print(df_concat.head(3))
     #print(df_concat['TENURE'])
     # print(variables_description)
+    print("--- %s seconds ---" % (time.time() - start_time))
 
 
 if __name__ == "__main__":
